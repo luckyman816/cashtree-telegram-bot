@@ -3,9 +3,9 @@ import { text } from "stream/consumers";
 import { callback } from "telegraf/typings/button";
 import { Telegraf, Markup } from "telegraf";
 // Import the necessary packages
+import axios from "axios";
 const TelegramBot = require("node-telegram-bot-api");
 const dotenv = require("dotenv");
-const axios = require("axios");
 const express = require("express");
 const cors = require("cors");
 import Web3 from "web3";
@@ -168,19 +168,19 @@ bot.on("message", async (msg: any) => {
     try {
       await axios
         .post(
-          `https://localhost:5000/api/vibe/${msg.from.username}`
+          `http://localhost:5000/api/vibe/${msg.from.username}`
         )
         .then((res: any) => {
           if (res.data.length == 0) {
             axios.post(
-              `https://localhost:5000/api/vibe/add`,
+              `http://localhost:5000/api/vibe/add`,
               {
                 username: msg.from.username,
               }
             );
           } else {
             axios.post(
-              `https://localhost:5000/api/vibe/updateMessage/${msg.from.username}`,
+              `http://localhost:5000/api/vibe/updateMessage/${msg.from.username}`,
               { message: true }
             )
             console.log("--//---OK!!!----//---", res.data);
@@ -274,7 +274,7 @@ bot.onText(/\/start (.+)/, async (msg: any, match: any) => {
 
   try {
     await axios.post(
-      `https://localhost:5000/api/friend/add`,
+      `http://localhost:5000/api/friend/add`,
       {
         username: referrerUsername,
         friend: USER_NAME,
@@ -282,22 +282,22 @@ bot.onText(/\/start (.+)/, async (msg: any, match: any) => {
     );
 
     const response00 = await axios.post(
-      `https://localhost:5000/api/wallet/add`,
+      `http://localhost:5000/api/wallet/add`,
       {
         username: USER_NAME,
       }
     );
 
     const response0 = await axios.post(
-      `https://localhost:5000/api/wallet/updateBalance/${USER_NAME}`,
+      `http://localhost:5000/api/wallet/updateBalance/${USER_NAME}`,
       { balance: 5000 }
     );
 
     const response1 = await axios.post(
-      `https://localhost:5000/api/wallet/${referrerUsername}`
+      `http://localhost:5000/api/wallet/${referrerUsername}`
     );
     const response2 = await axios.post(
-      `https://localhost:5000/api/wallet/updateBalance/${referrerUsername}`,
+      `http://localhost:5000/api/wallet/updateBalance/${referrerUsername}`,
       { balance: 5000 + response1.data.balance }
     );
 
